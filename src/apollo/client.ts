@@ -1,7 +1,8 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 export const client = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-alt',
+  // uri: 'https://api.thegraph.com/subgraphs/name/ianlapham/uniswap-v3-alt',
+  uri: 'http://localhost:3004/graphql',
   cache: new InMemoryCache(),
   queryDeduplication: true,
   defaultOptions: {
@@ -16,12 +17,14 @@ export const client = new ApolloClient({
 })
 
 export const healthClient = new ApolloClient({
-  uri: 'https://api.thegraph.com/index-node/graphql',
+  // uri: 'https://api.thegraph.com/index-node/graphql',
+  uri: 'http://localhost:3004/graphql',
   cache: new InMemoryCache(),
 })
 
 export const blockClient = new ApolloClient({
-  uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+  // uri: 'https://api.thegraph.com/subgraphs/name/blocklytics/ethereum-blocks',
+  uri: 'http://localhost:3004/graphql',
   cache: new InMemoryCache(),
   queryDeduplication: true,
   defaultOptions: {

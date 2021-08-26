@@ -16,6 +16,15 @@ export const GET_BLOCKS = (timestamps: string[]) => {
   return gql(queryString)
 }
 
+const INITIAL_BLOCK = gql`
+  query initialBlock {
+    blocks(first: 1, orderBy: timestamp, orderDirection: asc) {
+      number
+      timestamp
+    }
+  }
+`
+
 /**
  * for a given array of timestamps, returns block entities
  * @param timestamps
@@ -33,6 +42,7 @@ export function useBlocksFromTimestamps(
 } {
   const [blocks, setBlocks] = useState<any>()
   const [error, setError] = useState(false)
+  const [initialBlock, setInitialBlock] = useState<any>()
 
   useEffect(() => {
     async function fetchData() {
@@ -48,21 +58,44 @@ export function useBlocksFromTimestamps(
     }
   })
 
+  // Fetching first initial block that is indexed.
+  useEffect(() => {
+    const fetchInitialBlock = async () => {
+      const { data } = await blockClient.query({
+        query: INITIAL_BLOCK,
+      })
+
+      if (data) {
+        setInitialBlock(data.blocks[0])
+      }
+    }
+
+    fetchInitialBlock()
+  }, [])
+
   const blocksFormatted = useMemo(() => {
-    if (blocks) {
+    if (initialBlock && blocks) {
       const formatted = []
       for (const t in blocks) {
         if (blocks[t].length > 0) {
+          // Check if no blocks returned for timestamp.
           formatted.push({
             timestamp: t.split('t')[1],
             number: blocks[t][0]['number'],
+          })
+        } else {
+          // If no blocks returned for timestamp as it might be before indexing started.
+          // Use and push the initial block that is indexed.
+          formatted.push({
+            timestamp: initialBlock.timestamp,
+            number: initialBlock.number,
           })
         }
       }
       return formatted
     }
     return undefined
-  }, [blocks])
+  }, [blocks, initialBlock])
 
   return {
     blocks: blocksFormatted,
