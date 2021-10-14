@@ -32,7 +32,7 @@ export const TOKEN_SEARCH = gql`
 `
 
 export const POOL_SEARCH = gql`
-  query pools($tokens: [Bytes]!, $id: String) {
+  query pools($tokens: [String]!, $id: ID) {
     as0: pools(where: { token0_in: $tokens }) {
       id
       feeTier

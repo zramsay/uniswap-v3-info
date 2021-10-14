@@ -131,7 +131,7 @@ export interface PoolTickData {
 }
 
 const poolQuery = gql`
-  query pool($poolAddress: String!) {
+  query pool($poolAddress: ID!) {
     pool(id: $poolAddress) {
       tick
       token0 {
