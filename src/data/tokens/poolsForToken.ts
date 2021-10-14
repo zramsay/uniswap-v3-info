@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 import { client } from 'apollo/client'
 
 export const POOLS_FOR_TOKEN = gql`
-  query topPools($address: Bytes!) {
+  query topPools($address: String!) {
     asToken0: pools(first: 200, orderBy: totalValueLockedUSD, orderDirection: desc, where: { token0: $address }) {
       id
     }

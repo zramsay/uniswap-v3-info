@@ -9,7 +9,7 @@ import { PoolData } from 'state/pools/reducer'
 import { notEmpty, escapeRegExp } from 'utils'
 
 export const TOKEN_SEARCH = gql`
-  query tokens($value: String, $id: String) {
+  query tokens($value: String, $id: ID) {
     asSymbol: tokens(where: { symbol_contains: $value }, orderBy: totalValueLockedUSD, orderDirection: desc) {
       id
       symbol

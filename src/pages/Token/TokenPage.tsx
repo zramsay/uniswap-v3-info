@@ -76,7 +76,9 @@ export default function TokenPage({
     params: { address },
   },
 }: RouteComponentProps<{ address: string }>) {
-  address = address.toLowerCase()
+  // Using lowercase address doesn't work for queries.
+  // address = address.toLowerCase()
+
   // theming
   const backgroundColor = useColor(address)
   const theme = useTheme()

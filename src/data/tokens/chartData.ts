@@ -11,7 +11,7 @@ dayjs.extend(weekOfYear)
 const ONE_DAY_UNIX = 24 * 60 * 60
 
 const TOKEN_CHART = gql`
-  query tokenDayDatas($startTime: Int!, $skip: Int!, $address: Bytes!) {
+  query tokenDayDatas($startTime: Int!, $skip: Int!, $address: String!) {
     tokenDayDatas(
       first: 1000
       skip: $skip
