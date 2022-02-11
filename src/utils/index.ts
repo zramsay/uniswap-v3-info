@@ -7,10 +7,21 @@ import { Currency, CurrencyAmount, Fraction, Percent, Token } from '@uniswap/sdk
 import { abi as IUniswapV2Router02ABI } from '@uniswap/v2-periphery/build/IUniswapV2Router02.json'
 import { SupportedChainId } from 'constants/chains'
 import { ArbitrumNetworkInfo, NetworkInfo } from 'constants/networks'
+import { blockClient } from 'apollo/client'
 import JSBI from 'jsbi'
+import gql from 'graphql-tag'
 import { ROUTER_ADDRESS } from '../constants'
 import { TokenAddressMap } from '../state/lists/hooks'
 import { OptimismNetworkInfo } from './../constants/networks'
+
+const GET_LATEST_BLOCK = gql`
+  query blocks {
+    blocks(first: 1, orderBy: timestamp, orderDirection: desc) {
+      number
+      timestamp
+    }
+  }
+`
 
 // returns the checksummed address if the address is valid, otherwise returns false
 export function isAddress(value: any): string | false {
@@ -98,6 +109,20 @@ export function getEtherscanLink(
 }
 
 export const currentTimestamp = () => new Date().getTime()
+
+export async function getCurrentTimestamp(): Promise<number> {
+  const { data } = await blockClient.query({
+    query: GET_LATEST_BLOCK,
+  })
+
+  if (data) {
+    const [latestBlock] = data.blocks
+
+    return latestBlock.timestamp * 1000
+  } else {
+    return new Date().getTime()
+  }
+}
 
 // shorten the checksummed version of the input address to have 0x + 4 characters at start and end
 export function shortenAddress(address: string, chars = 4): string {

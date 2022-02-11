@@ -1,5 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client'
 import dayjs from 'dayjs'
+import useCurrentTimestamp from 'hooks/useCurrentTimestamp'
 
 /**
  * Used to get large amounts of data when
@@ -48,7 +49,8 @@ export async function splitQuery<Type>(
 }
 
 export function useDeltaTimestamps(): [number, number, number] {
-  const utcCurrentTime = dayjs()
+  const currentTimestamp = useCurrentTimestamp()
+  const utcCurrentTime = dayjs(currentTimestamp)
   const t1 = utcCurrentTime.subtract(1, 'day').startOf('minute').unix()
   const t2 = utcCurrentTime.subtract(2, 'day').startOf('minute').unix()
   const tWeek = utcCurrentTime.subtract(1, 'week').startOf('minute').unix()

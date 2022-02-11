@@ -2,7 +2,7 @@ import { ApolloClient, NormalizedCacheObject } from '@apollo/client'
 import gql from 'graphql-tag'
 
 export const POOLS_FOR_TOKEN = gql`
-  query topPools($address: Bytes!) {
+  query topPools($address: String!) {
     asToken0: pools(
       first: 200
       orderBy: totalValueLockedUSD
