@@ -20,6 +20,7 @@ import { notEmpty } from 'utils'
 import dayjs, { OpUnitType } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { useActiveNetworkVersion, useClients } from 'state/application/hooks'
+import useCurrentTimestamp from 'hooks/useCurrentTimestamp'
 // format dayjs with the libraries that we need
 dayjs.extend(utc)
 
@@ -177,7 +178,8 @@ export function useTokenPriceData(
 
   // construct timestamps and check if we need to fetch more data
   const oldestTimestampFetched = token.priceData.oldestFetchedTimestamp
-  const utcCurrentTime = dayjs()
+  const currentTimestamp = useCurrentTimestamp()
+  const utcCurrentTime = dayjs(currentTimestamp)
   const startTimestamp = utcCurrentTime.subtract(1, timeWindow).startOf('hour').unix()
 
   useEffect(() => {

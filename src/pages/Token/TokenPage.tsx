@@ -42,6 +42,7 @@ import { EthereumNetworkInfo } from 'constants/networks'
 import { GenericImageWrapper } from 'components/Logo'
 // import { SmallOptionButton } from '../../components/Button'
 import { useCMCLink } from 'hooks/useCMCLink'
+import useCurrentTimestamp from 'hooks/useCurrentTimestamp'
 import CMCLogo from '../../assets/images/cmc.png'
 
 const PriceText = styled(TYPE.label)`
@@ -143,6 +144,7 @@ export default function TokenPage({
   const [latestValue, setLatestValue] = useState<number | undefined>()
   const [valueLabel, setValueLabel] = useState<string | undefined>()
   const [timeWindow] = useState(DEFAULT_TIME_WINDOW)
+  const currentTimestamp = useCurrentTimestamp()
 
   // pricing data
   const priceData = useTokenPriceData(address, ONE_HOUR_SECONDS, timeWindow)
@@ -150,7 +152,7 @@ export default function TokenPage({
     if (priceData && tokenData && priceData.length > 0) {
       const adjusted = Object.assign([], priceData)
       adjusted.push({
-        time: currentTimestamp() / 1000,
+        time: currentTimestamp / 1000,
         open: priceData[priceData.length - 1].close,
         close: tokenData?.priceUSD,
         high: tokenData?.priceUSD,
@@ -160,7 +162,7 @@ export default function TokenPage({
     } else {
       return undefined
     }
-  }, [priceData, tokenData])
+  }, [priceData, tokenData, currentTimestamp])
 
   // watchlist
   const [savedTokens, addSavedToken] = useSavedTokens()

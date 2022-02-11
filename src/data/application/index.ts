@@ -5,8 +5,8 @@ import gql from 'graphql-tag'
 import { ArbitrumNetworkInfo, EthereumNetworkInfo } from 'constants/networks'
 
 export const SUBGRAPH_HEALTH = gql`
-  query health($name: Bytes) {
-    indexingStatusForCurrentVersion(subgraphName: $name, subgraphError: allow) {
+  query health($name: String!) {
+    indexingStatusForCurrentVersion(subgraphName: $name) {
       synced
       health
       chains {

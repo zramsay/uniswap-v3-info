@@ -4,7 +4,7 @@ import { Transaction, TransactionType } from 'types'
 import { formatTokenSymbol } from 'utils/tokens'
 
 const POOL_TRANSACTIONS = gql`
-  query transactions($address: Bytes!) {
+  query transactions($address: String!) {
     mints(first: 100, orderBy: timestamp, orderDirection: desc, where: { pool: $address }, subgraphError: allow) {
       timestamp
       transaction {
